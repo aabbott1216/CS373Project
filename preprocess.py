@@ -12,3 +12,8 @@ for i in range(303):
     
 # Remove rows with null values for thal
 heartrandom = heartrandom.drop(index = heartrandom[heartrandom['thal']==0].index).reset_index()
+
+# Replace thal values to match real world meaning of dataset
+heartrandom.loc[heartrandom.thal == 3, 'thal'] = 7
+heartrandom.loc[heartrandom.thal == 2, 'thal'] = 3
+heartrandom.loc[heartrandom.thal == 1, 'thal'] = 6
