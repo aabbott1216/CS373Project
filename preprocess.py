@@ -9,3 +9,6 @@ indexlist = np.random.choice(303,303,replace = False)
 heartrandom = heart.copy()
 for i in range(303):
     heartrandom.iloc[i,:] = heart.iloc[indexlist[i],:]
+    
+# Remove rows with null values for thal
+heartrandom = heartrandom.drop(index = heartrandom[heartrandom['thal']==0].index).reset_index()
