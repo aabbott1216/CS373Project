@@ -10,8 +10,9 @@ heartrandom = heart.copy()
 for i in range(303):
     heartrandom.iloc[i,:] = heart.iloc[indexlist[i],:]
     
-# Remove rows with null values for thal
+# Remove rows with null values for thal and ca
 heartrandom = heartrandom.drop(index = heartrandom[heartrandom['thal']==0].index).reset_index()
+heartrandom = heartrandom.drop(index = heartrandom[heartrandom['ca']==4].index).reset_index()
 
 # Replace thal values to match real world meaning of dataset
 heartrandom.loc[heartrandom.thal == 3, 'thal'] = 7
