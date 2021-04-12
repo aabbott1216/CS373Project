@@ -1,15 +1,16 @@
-# Input: number of folds k
-# numpy matrix X of features, with n rows (samples), d columns (features)
+# Input: numpy matrix X of features, with n rows (samples), d columns (features)
 # numpy vector y of scalar values, with n rows (samples), 1 column
 # Output: numpy vector z of k rows, 1 column
-def run(k, X, y):
+def run(X, y):
     import probclearn
     import probcpredict
     import numpy as np
+    y = heart['target'].to_numpy
+    X = heart.drop(labels='target',axis=1).to_numpy
     n = len(y)
-    z = [0]*k
-    for i in range(k):
-        T = range(int(n*(float(i)/k)), int(n*(float(i)+1)/(k)))
+    z = [0]*15
+    for i in range(15):
+        T = range(int(n*(float(i)/15)), int(n*(float(i)+1)/(15)))
         T_set = set(T)
         S = set(range(0, n))-T_set
         S_list = list(S)
