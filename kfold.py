@@ -1,7 +1,7 @@
 # Input: numpy matrix X of features, with n rows (samples), d columns (features)
 # numpy vector y of scalar values, with n rows (samples), 1 column
 # Output: numpy vector z of k rows, 1 column
-def run(X, y):
+def run(heart):
     import probclearn
     import probcpredict
     import numpy as np
