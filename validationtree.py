@@ -36,7 +36,11 @@ def run(heart):
 
     # Runs the visualization before returning the current tree.
     show_tree(tree, feature_list)
-    return tree
+    test_data = [[103, 1, 3, 121, 233, 1, 0, 65, 0, 2.3, 0, 0, 1],
+                 [18, 1, 2, 130, 100, 0, 1, 7, 0, 3.5, 0, 0, 2],
+                 [54, 0, 1, 115, 200, 0, 0, 172, 0, 1.4, 2, 0, 2]]
+    return tree.predict(test_data)
+#     return tree
 # # # # 
 # # # # # # # # # # End function
 
