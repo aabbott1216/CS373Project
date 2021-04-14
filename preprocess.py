@@ -1,8 +1,10 @@
 import numpy as np
 import pandas as pd
+from svm import run as run_svm
+from validationtree import run as run_tree
 
-import validationtree
-def run():
+
+def pre_run():
     # Reads in CSV file using Pandas.
     heart = pd.read_csv('resources/heart_dataset.csv', delimiter=',')
 
@@ -23,9 +25,10 @@ def run():
     heartrandom.loc[heartrandom.thal == 2, 'thal'] = 3
     heartrandom.loc[heartrandom.thal == 1, 'thal'] = 6
 
-    return heartrandom
+    print(run_svm(heartrandom))
+    print(run_tree(heartrandom))
 
 
 if __name__ == "__main__":
     df = pd.read_csv("resources/heart_dataset.csv")
-    print(run())
+    print(pre_run())
