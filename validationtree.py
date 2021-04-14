@@ -43,6 +43,9 @@ def run(heart):
 #     return tree
 # # # # 
 # # # # # # # # # # End function
+if __name__ == "__main__":
+    df = pd.read_csv("resources/heart_dataset.csv")
+    print(run(df))
 
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
