@@ -23,7 +23,7 @@ def show_tree(tree, features):
 def run(heart):
 
     # Gets list of the columns that represent features.
-    feature_list = list(heart.columns[2:15])
+    feature_list = list(heart.columns[:13])
 
     # Determines the X matrix (feature matrix)
     y = heart["target"]
