@@ -27,7 +27,7 @@ def run(heart, alg):
                     z[i] = z[i]+1
                     
         elif alg=="tree":
-            tree = validationtree.run(Xtrain,Ytrain)
+            tree = validationtree.run2(Xtrain, Ytrain)
             for t in T:
                 if y[t] != validationtree.predict(tree, X[t:t+1,:].T):
                     z[i] = z[i]+1

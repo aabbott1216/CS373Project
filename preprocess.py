@@ -15,10 +15,8 @@ def pre_run():
         heartrandom.iloc[i, :] = heart.iloc[indexlist[i], :]
 
     # Remove rows with null values for thal and ca
-    heartrandom = heartrandom.drop(
-        index=heartrandom[heartrandom['thal'] == 0].index)
-    heartrandom = heartrandom.drop(
-        index=heartrandom[heartrandom['ca'] == 4].index)
+    heartrandom = heartrandom.drop(index=heartrandom[heartrandom['thal'] == 0].index)
+    heartrandom = heartrandom.drop(index=heartrandom[heartrandom['ca'] == 4].index)
 
     # Replace thal values to match real world meaning of dataset
     heartrandom.loc[heartrandom.thal == 3, 'thal'] = 7

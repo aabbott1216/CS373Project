@@ -36,13 +36,45 @@ def run(heart):
 
     # Runs the visualization before returning the current tree.
     show_tree(tree, feature_list)
+    # return tree
+
+    # Sample data prediction.
     test_data = [[103, 1, 3, 121, 233, 1, 0, 65, 0, 2.3, 0, 0, 1],
                  [18, 1, 2, 130, 100, 0, 1, 7, 0, 3.5, 0, 0, 2],
                  [54, 0, 1, 115, 200, 0, 0, 172, 0, 1.4, 2, 0, 2]]
     return tree.predict(test_data)
-#     return tree
+    
 # # # # 
 # # # # # # # # # # End function
+
+
+# Fits data into a decision tree structure, but doesn't use the whole dataframe.
+def run2(X, y):
+
+    # Grabs the labels from the columns in X.
+    feature_list = list(X.columns)
+    
+    # Fits the data to a validation tree. 
+    # The minimal sample split parameter requires X values in a node before it will be split (can be modified).
+    tree = sklearn.tree.DecisionTreeClassifier(min_samples_split=10)
+    tree.fit(X, y)
+
+    # Runs the visualization before returning the current tree.
+    show_tree(tree, feature_list)
+    return tree
+# # # # 
+# # # # # # # # # # End function
+
+
+# Makes prediction for test data based on a passed tree.
+def predict(tree, test):
+
+    # Returns prediction.
+    return tree.predict(test)
+# # # # 
+# # # # # # # # # # End function
+
+
 if __name__ == "__main__":
     df = pd.read_csv("resources/heart_dataset.csv")
     print(run(df))
