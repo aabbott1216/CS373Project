@@ -10,7 +10,7 @@ def run(heart, alg):
     y = heart['target'].to_numpy
     X = heart.drop(labels='target',axis=1).to_numpy
     n = len(y)
-    z = [0]*30
+    z = np.zeros(30)
     for i in range(30):
         u = np.zeros(n)
         S = set()
