@@ -1,12 +1,12 @@
 import numpy as np
-import probclearn
-import probcpredict
+import validationtree
+import svm
 
 # Input: number of bootstraps B
 # numpy matrix X of features, with n rows (samples), d columns (features)
 # numpy vector y of scalar values, with n rows (samples), 1 column
 # Output: numpy vector z of B rows, 1 column
-def run(heart):
+def run(heart, alg):
     y = heart['target'].to_numpy
     X = heart.drop(labels='target',axis=1).to_numpy
     n = len(y)
@@ -25,9 +25,20 @@ def run(heart):
         for j in range(1, n):
             X_train = np.vstack([X_train, X[int(u[j])]])
             y_train = np.vstack([y_train, y[int(u[j])]])
-        q, mu_pos, mu_neg, var_pos, var_neg = probclearn.run(np.asarray(X_train), np.asarray(y_train))
-        for t in T:
-            if y[t] != probcpredict.run(q, mu_pos, mu_neg, var_pos, var_neg, np.resize(X[t], (len(X[t]), 1))):
-                z[i] += 1
-        z[i] /= len(T)
-    return np.reshape(z, (len(z), 1))
+            
+        if alg=="svm":
+            classifier = svm.run(X_train,y_train)
+            for t in T:
+                if y[t] != svm.predict(classifier, X[t:t+1,:].T):
+                    z[i] = z[i]+1
+                    
+        elif alg=="tree":
+            tree = validationtree.run(X_train,y_train)
+            for t in T:
+                if y[t] != validationtree.predict(tree, X[t:t+1,:].T):
+                    z[i] = z[i]+1
+
+        z[i] = z[i]/len(T)
+        z = z.reshape(z.shape[0],1)
+        
+    return z
