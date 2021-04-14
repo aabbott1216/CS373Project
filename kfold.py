@@ -43,7 +43,7 @@ def run(heart, alg):
 #     y = heart['target']
 #     X = heart[list(heart.columns[:13])]
 #     n = len(y)
-#     k = 10
+#     k = 15
 #     z = [0]*k
 #     for i in range(k):
 #         T = range(int(n*(float(i)/k)), int(n*(float(i)+1)/k))
