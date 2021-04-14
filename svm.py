@@ -8,8 +8,6 @@ def run(heart):
     X = heart[list(heart.columns[:13])]
     y = heart["target"]
 
-    # Fits the data to a validation tree.
-    # The minimal sample split parameter requires X values in a node before it will be split (can be modified).
     svm_classifier = SVC()
     svm_classifier = svm_classifier.fit(X, y)
 
