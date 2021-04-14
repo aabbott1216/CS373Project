@@ -37,3 +37,31 @@ def run(heart, alg):
         
     return z
 
+# def run(heart):
+#     from svm import run2
+#     import numpy as np
+#     y = heart['target']
+#     X = heart[list(heart.columns[:13])]
+#     n = len(y)
+#     k = 10
+#     z = [0]*k
+#     for i in range(k):
+#         T = range(int(n*(float(i)/k)), int(n*(float(i)+1)/k))
+#         T_set = set(T)
+#         S = set(range(0, n))-T_set
+#         S_list = list(S)
+#         T_list = list(T)
+#         X_train = X[S_list[0]:S_list[-1]]
+#         y_train = y[S_list[0]:S_list[-1]]
+#         X_test = X[T_list[0]:T_list[-1]]
+#         y_test = y[T_list[0]:T_list[-1]]
+#         results = []
+#         for t in T:
+#             results.append(run2(X_train, y_train, X_test, y_test))
+#     return results
+
+
+# if __name__ == "__main__":
+#     import pandas as pd
+#     heart = pd.read_csv("resources/heart_dataset.csv")
+#     print(run(heart))
