@@ -2,13 +2,15 @@
 # numpy matrix X of features, with n rows (samples), d columns (features)
 # numpy vector y of scalar values, with n rows (samples), 1 column
 # Output: numpy vector z of B rows, 1 column
-def run(B, X, y):
+def run(heart):
     import numpy as np
     import probclearn
     import probcpredict
+    y = heart['target'].to_numpy
+    X = heart.drop(labels='target',axis=1).to_numpy
     n = len(y)
-    z = [0]*B
-    for i in range(B):
+    z = [0]*30
+    for i in range(30):
         u = np.zeros(n)
         S = set()
         for j in range(n):
