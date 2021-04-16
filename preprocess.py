@@ -26,8 +26,10 @@ def pre_run():
     heartrandom.loc[heartrandom.thal == 2, 'thal'] = 3
     heartrandom.loc[heartrandom.thal == 1, 'thal'] = 6
 
-    print(k_fold_validation(heartrandom, "tree"))
-    print(k_fold_validation(heartrandom, "svm"))
+    print("Validation tree accuracy over 15 folds: ",
+          k_fold_validation(heartrandom, "tree"))
+    print("SVM accuracy over 15 folds: ",
+          k_fold_validation(heartrandom, "svm"))
 
 
 if __name__ == "__main__":

@@ -8,9 +8,7 @@ from validationtree import run2 as tree_run
 from validationtree import prediction as tree_pred
 
 
-# Input: numpy matrix X of features, with n rows (samples), d columns (features)
-# numpy vector y of scalar values, with n rows (samples), 1 column
-# Output: numpy vector z of k rows, 1 column
+# Run kfold cross validation on dataset to return average accuracy across all folds
 def run(heart, alg):
 
     y = heart['target']
@@ -47,7 +45,7 @@ def run(heart, alg):
                 if prediction[ii] == ytest[ii]:
                     z[i] += 1
         z[i] /= float(len(prediction))
-    return z
+    return np.mean(z)
 
 # def run(heart):
 #     from svm import run2
