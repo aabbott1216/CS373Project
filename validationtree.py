@@ -4,6 +4,8 @@ import sklearn.tree
 import subprocess
 
 # Visualizes the data using graphviz. May not work if graphviz is not installed.
+
+
 def show_tree(tree, features):
 
     with open("tree.dot", 'w') as f:
@@ -15,21 +17,20 @@ def show_tree(tree, features):
     except:
         print("An error occured translating DOT data into PNG. Use an online converter to see the tree.")
 
-# # # # 
+# # # #
 # # # # # # # # # # End function
 
 
 # Fits the data into a decision tree structure.
 def run(heart):
-
     # Gets list of the columns that represent features.
     feature_list = list(heart.columns[:13])
 
     # Determines the X matrix (feature matrix)
     y = heart["target"]
     X = heart[feature_list]
-    
-    # Fits the data to a validation tree. 
+
+    # Fits the data to a validation tree.
     # The minimal sample split parameter requires X values in a node before it will be split (can be modified).
     tree = sklearn.tree.DecisionTreeClassifier(min_samples_split=10)
     tree.fit(X, y)
@@ -43,18 +44,17 @@ def run(heart):
                  [18, 1, 2, 130, 100, 0, 1, 7, 0, 3.5, 0, 0, 2],
                  [54, 0, 1, 115, 200, 0, 0, 172, 0, 1.4, 2, 0, 2]]
     return tree.predict(test_data)
-    
-# # # # 
+
+# # # #
 # # # # # # # # # # End function
 
 
 # Fits data into a decision tree structure, but doesn't use the whole dataframe.
 def run2(X, y):
-
     # Grabs the labels from the columns in X.
     feature_list = list(X.columns)
-    
-    # Fits the data to a validation tree. 
+
+    # Fits the data to a validation tree.
     # The minimal sample split parameter requires X values in a node before it will be split (can be modified).
     tree = sklearn.tree.DecisionTreeClassifier(min_samples_split=10)
     tree.fit(X, y)
@@ -62,16 +62,15 @@ def run2(X, y):
     # Runs the visualization before returning the current tree.
     show_tree(tree, feature_list)
     return tree
-# # # # 
+# # # #
 # # # # # # # # # # End function
 
 
 # Makes prediction for test data based on a passed tree.
-def predict(tree, test):
-
+def prediction(tree, test):
     # Returns prediction.
     return tree.predict(test)
-# # # # 
+# # # #
 # # # # # # # # # # End function
 
 

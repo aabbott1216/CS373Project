@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from svm import run as run_svm
 from validationtree import run as run_tree
+from kfold import run as k_fold_validation
 
 
 def pre_run():
@@ -15,16 +16,17 @@ def pre_run():
         heartrandom.iloc[i, :] = heart.iloc[indexlist[i], :]
 
     # Remove rows with null values for thal and ca
-    heartrandom = heartrandom.drop(index=heartrandom[heartrandom['thal'] == 0].index)
-    heartrandom = heartrandom.drop(index=heartrandom[heartrandom['ca'] == 4].index)
+    heartrandom = heartrandom.drop(
+        index=heartrandom[heartrandom['thal'] == 0].index)
+    heartrandom = heartrandom.drop(
+        index=heartrandom[heartrandom['ca'] == 4].index)
 
     # Replace thal values to match real world meaning of dataset
     heartrandom.loc[heartrandom.thal == 3, 'thal'] = 7
     heartrandom.loc[heartrandom.thal == 2, 'thal'] = 3
     heartrandom.loc[heartrandom.thal == 1, 'thal'] = 6
 
-    print(run_svm(heartrandom))
-    print(run_tree(heartrandom))
+    print(k_fold_validation(heartrandom, "tree"))
 
 
 if __name__ == "__main__":
