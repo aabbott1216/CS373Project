@@ -27,6 +27,7 @@ def pre_run():
     heartrandom.loc[heartrandom.thal == 1, 'thal'] = 6
 
     print(k_fold_validation(heartrandom, "tree"))
+    print(k_fold_validation(heartrandom, "svm"))
 
 
 if __name__ == "__main__":
