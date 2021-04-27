@@ -20,15 +20,15 @@ def run(heart):
 
 
 # Fits data to svm classifier model and returns the model
-def run2(x_train, y_train):
+def run2(x_train, y_train, c_param):
     # Fits the data to a validation tree.
     # The minimal sample split parameter requires X values in a node before it will be split (can be modified).
-    svm_classifier = SVC()
+    svm_classifier = SVC(C=c_param)
     svm_classifier = svm_classifier.fit(x_train, y_train)
     return svm_classifier
-    # return tuple((svm_classifier.predict(x_test), y_test))
-
 
 # Predicts classification of given test data using given model
+
+
 def prediction(classifier, test):
     return classifier.predict(test)
