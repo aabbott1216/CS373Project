@@ -23,6 +23,7 @@ def show_tree(tree, features):
 
 # Fits the data into a decision tree structure.
 def run(heart):
+
     # Gets list of the columns that represent features.
     feature_list = list(heart.columns[:13])
 
@@ -32,7 +33,7 @@ def run(heart):
 
     # Fits the data to a validation tree.
     # The minimal sample split parameter requires X values in a node before it will be split (can be modified).
-    tree = sklearn.tree.DecisionTreeClassifier(min_samples_split=10)
+    tree = sklearn.tree.DecisionTreeClassifier(criterion="gini", min_samples_split=10)
     tree.fit(X, y)
 
     # Runs the visualization before returning the current tree.
@@ -51,25 +52,29 @@ def run(heart):
 
 # Fits data into a decision tree structure, but doesn't use the whole dataframe.
 def run2(X, y):
+
     # Grabs the labels from the columns in X.
     feature_list = list(X.columns)
 
     # Fits the data to a validation tree.
     # The minimal sample split parameter requires X values in a node before it will be split (can be modified).
-    tree = sklearn.tree.DecisionTreeClassifier(min_samples_split=10)
+    tree = sklearn.tree.DecisionTreeClassifier(criterion="gini", min_samples_split=10)
     tree.fit(X, y)
 
     # Runs the visualization before returning the current tree.
     show_tree(tree, feature_list)
     return tree
+
 # # # #
 # # # # # # # # # # End function
 
 
 # Makes prediction for test data based on a passed tree.
 def prediction(tree, test):
+    
     # Returns prediction.
     return tree.predict(test)
+
 # # # #
 # # # # # # # # # # End function
 
