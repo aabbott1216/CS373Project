@@ -8,3 +8,4 @@ To Do
 - Decision Tree Gini Threshold hyperparameter
 - ROC curve experimental results
 - Hyperparams vs accuracy
+- Finish bootstrapping
