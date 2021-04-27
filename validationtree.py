@@ -51,14 +51,15 @@ def run(heart):
 
 
 # Fits data into a decision tree structure, but doesn't use the whole dataframe.
-def run2(X, y):
+def run2(X, y, gini_split):
 
     # Grabs the labels from the columns in X.
     feature_list = list(X.columns)
 
     # Fits the data to a validation tree.
-    # The minimal sample split parameter requires X values in a node before it will be split (can be modified).
-    tree = sklearn.tree.DecisionTreeClassifier(criterion="gini", min_samples_split=10)
+    # The minimal sample split (hyper)parameter requires X values in a node before it will be split. It could be modified.
+    # Minimum impurity decrease is the hyperparameter we are tuning. A higher value will cause less division. Default is 0.0 (float).
+    tree = sklearn.tree.DecisionTreeClassifier(criterion="gini", min_samples_split=10, min_impurity_decrease=gini_split)
     tree.fit(X, y)
 
     # Runs the visualization before returning the current tree.
