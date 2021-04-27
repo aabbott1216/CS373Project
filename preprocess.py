@@ -3,6 +3,7 @@ import pandas as pd
 from svm import run as run_svm
 from validationtree import run as run_tree
 from kfold import run as k_fold_validation
+from bootstrapping import run as bootstrapping_validation
 
 
 def pre_run():
@@ -26,10 +27,17 @@ def pre_run():
     heartrandom.loc[heartrandom.thal == 2, 'thal'] = 3
     heartrandom.loc[heartrandom.thal == 1, 'thal'] = 6
 
+    # Runs SVM and decision tree algorithms using k-fold cross-validation.
     print("Validation tree accuracy over 15 folds: ",
           k_fold_validation(heartrandom, "tree"))
     print("SVM accuracy over 15 folds: ",
           k_fold_validation(heartrandom, "svm"))
+
+    # Runs SVM and decision tree algorithms using bootstrapping.
+    print("Validation tree accuracy over 30 rounds: ",
+          bootstrapping_validation(heartrandom, "tree"))
+    print("SVM accuracy after 30 rounds: ",
+          bootstrapping_validation(heartrandom, "svm"))
 
 
 if __name__ == "__main__":

@@ -3,9 +3,8 @@ import pandas as pd
 import sklearn.tree
 import subprocess
 
+
 # Visualizes the data using graphviz. May not work if graphviz is not installed.
-
-
 def show_tree(tree, features):
 
     with open("tree.dot", 'w') as f:
