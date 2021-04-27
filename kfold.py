@@ -1,21 +1,28 @@
 import validationtree
 import svm
 import numpy as np
+import pandas as pd
 
 from svm import run2 as svm_run
 from svm import prediction as svm_pred
 from validationtree import run2 as tree_run
 from validationtree import prediction as tree_pred
-
-
+from SensitivitySpecificity import run as get_sens_spec
+from roccurve import run as roc_plot
 # Run kfold cross validation on dataset to return average accuracy across all folds
-def run(heart, alg):
 
+
+def run(heart, alg):
     y = heart['target']
     X = heart.drop(labels='target', axis=1)
     n = y.shape[0]
     k = 15
-    z = [0]*k
+    z_svm = [0]*k
+    z_tree = [0]*k
+    svm_hyperparam = range(1, 30, 1)
+    tree_hyperparam = []
+    svm_df = pd.DataFrame(
+        columns=['C', 'Accuracy', 'Sensitivity', 'Specificity', 'Fold'])
 
     for i in range(k):
         T = range(int(n*(float(i)/k)), int(n*(float(i)+1)/k))
@@ -23,55 +30,47 @@ def run(heart, alg):
         S = set(range(0, n))-T_set
         S_list = list(S)
         T_list = list(T)
+        pred_length = 0
 
         Xtrain = X[S_list[0]:S_list[-1]]
         ytrain = y[S_list[0]:S_list[-1]]
         Xtest = X[T_list[0]:T_list[-1]]
         ytest = y[T_list[0]:T_list[-1]]
 
-        if alg == "svm":
-            classifier = svm_run(Xtrain, ytrain)
-            prediction = list(svm_pred(classifier, Xtest))
+        if "svm" in alg:
+            # Store hyperparameter accuracies
+            hyper_accs = [0]*len(svm_hyperparam)
+
+            # For each hyperparameter, make a new model with that hyperparameter value and get the accuracy, sensitivity, and specificity to store in svm_df
+            for iii, hyperparam in enumerate(svm_hyperparam):
+                classifier_svm = svm_run(Xtrain, ytrain, hyperparam)
+                prediction_svm = list(svm_pred(classifier_svm, Xtest))
+                ytest = list(ytest)
+                pred_length = len(prediction_svm)
+                sens, spec = get_sens_spec(ytest, prediction_svm)
+                for ii in range(len(prediction_svm)):
+                    if prediction_svm[ii] == ytest[ii]:
+                        hyper_accs[iii] += 1.0
+                temp_df = pd.DataFrame([[hyperparam, hyper_accs[iii]/pred_length, sens, spec, i]], columns=[
+                                       'C', 'Accuracy', 'Sensitivity', 'Specificity', 'Fold'])
+                svm_df = svm_df.append(
+                    temp_df)
+
+        elif "tree" in alg:
+            tree = validationtree.run2(Xtrain, ytrain)
+            prediction_tree = list(tree_pred(tree, Xtest))
             ytest = list(ytest)
-            for ii in range(len(prediction)):
-                if prediction[ii] == ytest[ii]:
-                    z[i] += 1
+            pred_length = len(prediction_tree)
+            for ii in range(len(prediction_tree)):
+                if prediction_tree[ii] == ytest[ii]:
+                    z_tree[i] += 1
 
-        elif alg == "tree":
-            tree = tree_run(Xtrain, ytrain)
-            prediction = list(tree_pred(tree, Xtest))
-            ytest = list(ytest)
-            for ii in range(len(prediction)):
-                if prediction[ii] == ytest[ii]:
-                    z[i] += 1
-        z[i] /= float(len(prediction))
-    return np.mean(z)
+        z_svm[i] /= pred_length
+        z_tree[i] /= pred_length
+    print(svm_df)
 
-# def run(heart):
-#     from svm import run2
-#     import numpy as np
-#     y = heart['target']
-#     X = heart[list(heart.columns[:13])]
-#     n = len(y)
-#     k = 15
-#     z = [0]*k
-#     for i in range(k):
-    # T = range(int(n*(float(i)/k)), int(n*(float(i)+1)/k))
-    # T_set = set(T)
-    # S = set(range(0, n))-T_set
-    # S_list = list(S)
-    # T_list = list(T)
-    # X_train = X[S_list[0]:S_list[-1]]
-    # y_train = y[S_list[0]:S_list[-1]]
-    # X_test = X[T_list[0]:T_list[-1]]
-    # y_test = y[T_list[0]:T_list[-1]]
-#         results = []
-#         for t in T:
-#             results.append(run2(X_train, y_train, X_test, y_test))
-#     return results
+    # ROC plot data
+    temp_data = svm_df.loc[svm_df["Fold"] == 0]
+    roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
 
-
-# if __name__ == "__main__":
-#     import pandas as pd
-#     heart = pd.read_csv("resources/heart_dataset.csv")
-#     print(run(heart))
+    return (np.mean(z_svm), np.mean(z_tree))
