@@ -18,4 +18,4 @@ def run(actual, predicted):
 
     sensitivity = float(TP) / (TP + FN)
     specificity = float(TN) / (TN + FP)
-    return [sensitivity, specificity]
+    return (sensitivity, specificity)
