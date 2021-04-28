@@ -33,7 +33,7 @@ def pre_run():
 
     # Runs the algorithms with bootstrapping.
     print("Validation tree and SVM over 30 rounds: ",
-          k_fold_validation(heartrandom, ["svm", "tree"]))
+          boot_validation(heartrandom, ["svm", "tree"]))
 
 
 if __name__ == "__main__":
