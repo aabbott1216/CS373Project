@@ -80,10 +80,12 @@ def run(heart, alg):
                     temp_df)
 
     # ROC plot data
+    mean_svm_df = (svm_df.groupby('C').mean()).reset_index()
+    mean_tree_df = (tree_df.groupby('Gini').mean()).reset_index()
     roc_plot(svm_df['Sensitivity'], svm_df['Specificity'],
              tree_df['Sensitivity'], tree_df['Specificity'])
     # Accuracy vs hyperparam plot
-    acc_plot(svm_df['C'], svm_df['Accuracy'], 
-             tree_df['Gini'], tree_df['Accuracy'])
+    acc_plot(mean_svm_df['C'], mean_svm_df['Accuracy'],
+             mean_tree_df['Gini'], mean_tree_df['Accuracy'])
 
     return (np.mean(z_svm), np.mean(z_tree))
