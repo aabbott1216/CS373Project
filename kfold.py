@@ -86,7 +86,7 @@ def run(heart, alg):
         roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
         acc_plot(temp_data['C'], temp_data['Accuracy'])
     elif "tree" in alg:
-        temp_data = tree_df.loc[svm_df["Fold"] == 0]
+        temp_data = tree_df.loc[tree_df["Fold"] == 0]
         roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
         acc_plot(temp_data['Gini'], temp_data['Accuracy'])
         
