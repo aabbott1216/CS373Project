@@ -10,17 +10,17 @@ def run(hyperSvm, accSvm, hyperTree, accTree):
     
     for i in range(sParams):
         sSum = 0
-        hyperSvmUni[i] = hyperSvm[i*15]
+        hyperSvmUni.append(hyperSvm[i*15])
         for j in range(15):
             sSum += accSvm[(i*15)+j]
-        accSvmAvg[i] = sSum
+        accSvmAvg.append(sSum)
         
     for i in range(tParams):
         tSum = 0
-        hyperTreeUni[i] = hyperTree[i*15]
+        hyperTreeUni.append(hyperTree[i*15])
         for j in range(15):
             tSum += accTree[(i*15)+j]
-        accTreeAvg[i] = tSum
+        accTreeAvg.append(tSum)
         
     fig1, (axis1, axis2) = plt.subplots(1, 2)
     fig1.suptitle('Hyperparameter vs. Accuracy')
