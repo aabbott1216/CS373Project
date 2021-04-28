@@ -2,22 +2,35 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def run(sensitivity_svm, specificity_svm):
-    sens_spec_dict = dict()
+def run(sensitivity_svm, specificity_svm, sensitivity_tree, specificity_tree):
+    sens_spec_dict_svm = dict()
     sensitivity_svm = list(sensitivity_svm)
     specificity_svm = list(specificity_svm)
     for i, key in enumerate(specificity_svm):
-        sens_spec_dict[key] = sensitivity_svm[i]
-    sens_sorted = []
-    spec_sorted = []
-    for key in sorted(sens_spec_dict):
-        spec_sorted.append(key)
-        sens_sorted.append(sens_spec_dict[key])
-    plt.scatter(1-np.array(spec_sorted), sens_sorted)
+        sens_spec_dict_svm[key] = sensitivity_svm[i]
+    sens_sorted_svm = []
+    spec_sorted_svm = []
+    for key in sorted(sens_spec_dict_svm):
+        spec_sorted_svm.append(key)
+        sens_sorted_svm.append(sens_spec_dict_svm[key])
+
+    sens_spec_dict_tree = dict()
+    sensitivity_tree = list(sensitivity_tree)
+    specificity_tree = list(specificity_tree)
+    for i, key in enumerate(specificity_tree):
+        sens_spec_dict_tree[key] = sensitivity_tree[i]
+    sens_sorted_tree = []
+    spec_sorted_tree = []
+    for key in sorted(sens_spec_dict_tree):
+        spec_sorted_tree.append(key)
+        sens_sorted_tree.append(sens_spec_dict_tree[key])
+
+    plt.scatter(1-np.array(spec_sorted_svm), sens_sorted_svm)
+    plt.scatter(1-np.array(spec_sorted_tree), sens_sorted_tree)
     plt.plot([0, 1])
+    plt.legend(["Boundary", "SVM ROC", "Decision Tree ROC"])
 
     plt.xlabel("1 - Specificity")
     plt.ylabel("Sensitivity")
     plt.title("ROC curve")
-    # plt.plot(specificity_tree, sensitivity_tree)
     plt.show()
