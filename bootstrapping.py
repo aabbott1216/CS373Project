@@ -112,10 +112,12 @@ def run(heart, alg):
         print(svm_df)
         temp_data = svm_df.loc[svm_df["Fold"] == 0]
         roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
+        acc_plot(temp_data['C'], temp_data['Accuracy'])
     else:
         print(tree_df)
         temp_data = tree_df.loc[svm_df["Fold"] == 0]
         roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
+        acc_plot(temp_data['gini'], temp_data['Accuracy'])
         
     # return z
     return (np.mean(z_svm), np.mean(z_tree))
