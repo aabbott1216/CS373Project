@@ -20,7 +20,8 @@ def run(heart, alg):
     k = 15
     z_svm = [0]*k
     z_tree = [0]*k
-    svm_hyperparam = range(1, 10, 1)
+    svm_hyperparam = [0.1, 0.2, 0.5, 0.7, 0.9, 1, 2,
+                      3, 5, 10, 20, 40, 60, 80, 100, 120, 140, 160]
     tree_hyperparam = [0, .05, .1, .15, .20, .25, .30, .35, .40, .45, .50]
     svm_df = pd.DataFrame(
         columns=['C', 'Accuracy', 'Sensitivity', 'Specificity', 'Fold'])
@@ -60,7 +61,7 @@ def run(heart, alg):
                 svm_df = svm_df.append(
                     temp_df)
 
-        elif "tree" in alg:
+        if "tree" in alg:
             # Store hyperparameter accuracies
             hyper_accs_tree = [0]*len(tree_hyperparam)
             for iii, hyperparam in enumerate(tree_hyperparam):
@@ -78,17 +79,10 @@ def run(heart, alg):
                 tree_df = tree_df.append(
                     temp_df)
 
-
     # ROC plot data
-    if "svm" in alg:
-        print(svm_df)
-        temp_data = svm_df.loc[svm_df["Fold"] == 0]
-        roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
-        acc_plot(temp_data['C'], temp_data['Accuracy'])
-    elif "tree" in alg:
-        print(tree_df)
-        temp_data = tree_df.loc[tree_df["Fold"] == 0]
-        roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
-        acc_plot(temp_data['Gini'], temp_data['Accuracy'])
-        
+    roc_plot(svm_df['Sensitivity'], svm_df['Specificity'],
+             tree_df['Sensitivity'], tree_df['Specificity'])
+    # Accuracy vs hyperparam plot
+    acc_plot(svm_df['C'], svm_df['Accuracy'])
+
     return (np.mean(z_svm), np.mean(z_tree))
