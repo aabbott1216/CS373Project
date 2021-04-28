@@ -21,7 +21,7 @@ def run(heart, alg):
     z_svm = [0]*k
     z_tree = [0]*k
     svm_hyperparam = [0.1, 0.2, 0.5, 0.7, 0.9, 1, 2,
-                      3, 5, 10, 20, 40, 60, 80, 100, 120, 140, 160]
+                      3, 5, 10, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 225, 250]
     tree_hyperparam = [0, .05, .1, .15, .20, .25, .30, .35, .40, .45, .50]
     svm_df = pd.DataFrame(
         columns=['C', 'Accuracy', 'Sensitivity', 'Specificity', 'Fold'])
@@ -83,6 +83,6 @@ def run(heart, alg):
     roc_plot(svm_df['Sensitivity'], svm_df['Specificity'],
              tree_df['Sensitivity'], tree_df['Specificity'])
     # Accuracy vs hyperparam plot
-    acc_plot(svm_df['C'], svm_df['Accuracy'])
+    acc_plot(svm_df['C'], svm_df['Accuracy'], svm_df)
 
     return (np.mean(z_svm), np.mean(z_tree))
