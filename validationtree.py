@@ -36,7 +36,7 @@ def run(heart):
     tree.fit(X, y)
 
     # Runs the visualization before returning the current tree.
-    show_tree(tree, feature_list)
+    # show_tree(tree, feature_list)
     # return tree
 
     # Sample data prediction.
@@ -62,7 +62,7 @@ def run2(X, y, gini_split):
     tree.fit(X, y)
 
     # Runs the visualization before returning the current tree.
-    show_tree(tree, feature_list)
+    # show_tree(tree, feature_list)
     return tree
 
 # # # #
