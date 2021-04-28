@@ -83,6 +83,7 @@ def run(heart, alg):
     roc_plot(svm_df['Sensitivity'], svm_df['Specificity'],
              tree_df['Sensitivity'], tree_df['Specificity'])
     # Accuracy vs hyperparam plot
-    acc_plot(svm_df['C'], svm_df['Accuracy'], svm_df)
+    acc_plot(svm_df['C'], svm_df['Accuracy'], 
+             tree_df['Gini'], tree_df['Accuracy'])
 
     return (np.mean(z_svm), np.mean(z_tree))
