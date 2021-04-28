@@ -9,6 +9,7 @@ from validationtree import run2 as tree_run
 from validationtree import prediction as tree_pred
 from SensitivitySpecificity import run as get_sens_spec
 from roccurve import run as roc_plot
+from HyperVsAcc import run as acc_plot
 # Run kfold cross validation on dataset to return average accuracy across all folds
 
 
@@ -73,14 +74,20 @@ def run(heart, alg):
                     if prediction_tree[ii] == ytest[ii]:
                         hyper_accs_tree[iii] += 1
                 temp_df = pd.DataFrame([[hyperparam, hyper_accs_tree[iii]/pred_length, sens, spec, i]], columns=[
-                    'gini', 'Accuracy', 'Sensitivity', 'Specificity', 'Fold'])
+                    'Gini', 'Accuracy', 'Sensitivity', 'Specificity', 'Fold'])
                 tree_df = tree_df.append(
                     temp_df)
     print(svm_df)
     print(tree_df)
 
     # ROC plot data
-    temp_data = svm_df.loc[svm_df["Fold"] == 0]
-    roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
-
+    if "svm" in alg:
+        temp_data = svm_df.loc[svm_df["Fold"] == 0]
+        roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
+        acc_plot(temp_data['C'], temp_data['Accuracy'])
+    elif "tree" in alg:
+        temp_data = tree_df.loc[svm_df["Fold"] == 0]
+        roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
+        acc_plot(temp_data['Gini'], temp_data['Accuracy'])
+        
     return (np.mean(z_svm), np.mean(z_tree))
