@@ -13,7 +13,7 @@ def run(sensitivity_svm, specificity_svm):
     for key in sorted(sens_spec_dict):
         spec_sorted.append(key)
         sens_sorted.append(sens_spec_dict[key])
-    plt.Line2D(1-np.array(spec_sorted), sens_sorted)
+    plt.scatter(1-np.array(spec_sorted), sens_sorted)
     plt.plot([0, 1])
 
     plt.xlabel("1 - Specificity")
