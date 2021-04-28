@@ -1,20 +1,23 @@
 import validationtree
 import svm
 import numpy as np
+import pandas as pd
 
 from svm import run2 as svm_run
 from svm import prediction as svm_pred
 from validationtree import run2 as tree_run
 from validationtree import prediction as tree_pred
 from SensitivitySpecificity import run as get_sens_spec
+from roccurve import run as roc_plot
+from HyperVsAcc import run as acc_plot
 
 # Bootstrapping implementation for both the SVM and decision tree algorithms.
 def run(heart, alg):
 
     # Forms needed matrices.
-    y = heart['target'].to_numpy
-    X = heart.drop(labels='target',axis=1).to_numpy
-    n = len(y)
+    y = heart['target']
+    X = heart.drop(labels='target',axis=1)
+    n = y.shape[0]
     b = 30
     z_svm = [0]*b
     z_tree = [0]*b
@@ -36,15 +39,12 @@ def run(heart, alg):
         T = set(range(n))
         T -= S
 
-        # Forms training sets. 
-        Xtrain = np.matrix(X[int(u[0])])
-        ytrain = np.matrix(y[int(u[0])])
-        for j in range(1, n):
-            Xtrain = np.vstack([Xtrain, X[int(u[j])]])
-            ytrain = np.vstack([ytrain, y[int(u[j])]])
-
-        # Forms testing sets.
         T_list = list(T)
+        S_list = list(S)
+
+        # Forms training and testing sets.
+        Xtrain = X[S_list[0]:S_list[-1]]
+        ytrain = y[S_list[0]:S_list[-1]]
         Xtest = X[T_list[0]:T_list[-1]]
         ytest = y[T_list[0]:T_list[-1]]
             
@@ -64,7 +64,7 @@ def run(heart, alg):
             # Essentially copied from the kfold.py file. 
             for iii, hyperparam in enumerate(svm_hyperparam):
                 
-                classifier_svm = svm_run(Xtrain, ytrain, svm_hyperparam)
+                classifier_svm = svm_run(Xtrain, ytrain, hyperparam)
                 prediction_svm = list(svm_pred(classifier_svm, Xtest))
                 ytest = list(ytest)
                 pred_length = len(prediction_svm)
@@ -113,9 +113,9 @@ def run(heart, alg):
         temp_data = svm_df.loc[svm_df["Fold"] == 0]
         roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
         acc_plot(temp_data['C'], temp_data['Accuracy'])
-    else:
+    elif (alg == "tree"):
         print(tree_df)
-        temp_data = tree_df.loc[svm_df["Fold"] == 0]
+        temp_data = tree_df.loc[tree_df["Fold"] == 0]
         roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
         acc_plot(temp_data['gini'], temp_data['Accuracy'])
         
