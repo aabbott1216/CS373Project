@@ -19,8 +19,9 @@ def run(heart, alg):
     z_svm = [0]*b
     z_tree = [0]*b
     svm_hyperparam = range(1, 30, 1)
-    tree_hyperparam = []
+    tree_hyperparam = [0, .05, .1, .15, .20, .25, .30, .35, .40, .45, .50]
     svm_df = pd.DataFrame(columns=['C', 'Accuracy', 'Sensitivity', 'Specificity', 'Fold'])
+    tree_df = pd.DataFrame(columns=['gini', 'Accuracy', 'Sensitivity', 'Specificity', 'Fold'])
 
     # Runs the bootstrapping cross-validation.
     for i in range(b):
@@ -36,11 +37,11 @@ def run(heart, alg):
         T -= S
 
         # Forms training sets. 
-        X_train = np.matrix(X[int(u[0])])
-        y_train = np.matrix(y[int(u[0])])
+        Xtrain = np.matrix(X[int(u[0])])
+        ytrain = np.matrix(y[int(u[0])])
         for j in range(1, n):
-            X_train = np.vstack([X_train, X[int(u[j])]])
-            y_train = np.vstack([y_train, y[int(u[j])]])
+            Xtrain = np.vstack([Xtrain, X[int(u[j])]])
+            ytrain = np.vstack([ytrain, y[int(u[j])]])
 
         # Forms testing sets.
         T_list = list(T)
@@ -63,7 +64,7 @@ def run(heart, alg):
             # Essentially copied from the kfold.py file. 
             for iii, hyperparam in enumerate(svm_hyperparam):
                 
-                classifier_svm = svm_run(Xtrain, ytrain, hyperparam)
+                classifier_svm = svm_run(Xtrain, ytrain, svm_hyperparam)
                 prediction_svm = list(svm_pred(classifier_svm, Xtest))
                 ytest = list(ytest)
                 pred_length = len(prediction_svm)
@@ -77,19 +78,44 @@ def run(heart, alg):
 
         # Bootstrapping for decision tree.            
         elif alg=="tree":
-            tree = tree_run(X_train,y_train)
-            for t in T:
-                if y[t] != tree_pred(tree, X[t:t+1,:].T):
-                    z[i] = z[i]+1
+            
+            # LEGACY CODE
+            # tree = tree_run(X_train,y_train)
+            # for t in T:
+            #     if y[t] != tree_pred(tree, X[t:t+1,:].T):
+            #         z[i] = z[i]+1
+
+            # Store hyperparameter accuracies
+            hyper_accs_tree = [0]*len(tree_hyperparam)
+            
+            for iii, hyperparam in enumerate(tree_hyperparam):
+                tree = tree_run(Xtrain, ytrain, hyperparam)
+                prediction_tree = list(tree_pred(tree, Xtest))
+                ytest = list(ytest)
+                pred_length = len(prediction_tree)
+                sens, spec = get_sens_spec(ytest, prediction_tree)
+
+                for ii in range(len(prediction_tree)):
+                    if prediction_tree[ii] == ytest[ii]:
+                        hyper_accs_tree[iii] += 1
+                temp_df = pd.DataFrame([[hyperparam, hyper_accs_tree[iii]/pred_length, sens, spec, i]], 
+                      columns=['gini', 'Accuracy', 'Sensitivity', 'Specificity', 'Fold'])
+                tree_df = tree_df.append(temp_df)
 
         # z[i] = z[i]/len(T)
         # z = z.reshape(z.shape[0],1)
-        z_svm[i] /= pred_length
-        z_tree[i] /= pred_length
+        # z_svm[i] /= pred_length
+        # z_tree[i] /= pred_length
 
     # ROC plot data
-    # temp_data = svm_df.loc[svm_df["Fold"] == 0]
-    # roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
+    if (alg == "svm"):    
+        print(svm_df)
+        temp_data = svm_df.loc[svm_df["Fold"] == 0]
+        roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
+    else:
+        print(tree_df)
+        temp_data = tree_df.loc[svm_df["Fold"] == 0]
+        roc_plot(temp_data['Sensitivity'], temp_data['Specificity'])
         
     # return z
     return (np.mean(z_svm), np.mean(z_tree))
