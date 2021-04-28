@@ -5,8 +5,8 @@ def run(hyperSvm, accSvm, hyperTree, accTree):
     accSvmAvg = []
     hyperTreeUni = []
     accTreeAvg = []
-    sParams = len(hyperSvm)/15
-    tParams = len(hyperTree)/15
+    sParams = int(len(hyperSvm)/15)
+    tParams = int(len(hyperTree)/15)
     
     for i in range(sParams):
         sSum = 0
