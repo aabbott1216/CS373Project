@@ -20,9 +20,10 @@ def run(heart, alg):
     k = 15
     z_svm = [0]*k
     z_tree = [0]*k
-    svm_hyperparam = [0.1, 0.2, 0.5, 0.7, 0.9, 1, 2,
-                      3, 5, 10, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 225, 250]
-    tree_hyperparam = [0, .05, .1, .15, .20, .25, .30, .35, .40, .45, .50]
+    svm_hyperparam = [0.1, 0.2, 0.5, 0.7, 1, 5, 10,
+                      20, 40, 60, 80, 100, 120, 140, 160, 180, ]
+    tree_hyperparam = [0, 0.01, 0.03, .05, 0.75, .1,
+                       0.125, .15, 0.175, .20, .25, .30, .35, .40, .45, .50]
     svm_df = pd.DataFrame(
         columns=['C', 'Accuracy', 'Sensitivity', 'Specificity', 'Fold'])
     tree_df = pd.DataFrame(
