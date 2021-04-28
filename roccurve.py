@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def run(sensitivity_svm, specificity_svm, sensitivity_tree, specificity_tree):
+def run(sensitivity_svm, specificity_svm, sensitivity_tree, specificity_tree, title):
     sens_spec_dict_svm = dict()
     sensitivity_svm = list(sensitivity_svm)
     specificity_svm = list(specificity_svm)
@@ -30,7 +30,12 @@ def run(sensitivity_svm, specificity_svm, sensitivity_tree, specificity_tree):
     plt.plot([0, 1])
     plt.legend(["Boundary", "SVM ROC", "Decision Tree ROC"])
 
+    if (title == "kfold"):
+        plot_title = "ROC Curve (K-fold)"
+    elif (title == "boot"):
+        plot_title = "ROC Curve (Bootstrapping)"
+
     plt.xlabel("1 - Specificity")
     plt.ylabel("Sensitivity")
-    plt.title("ROC curve")
+    plt.title(plot_title)
     plt.show()
