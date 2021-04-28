@@ -1,6 +1,27 @@
 import matplotlib.pyplot as plt
 
-def run(hyperSVM, accSVM, hyperTree, accTree):
+def run(hyperSvm, accSvm, hyperTree, accTree):
+    hyperSvmUni = []
+    accSvmAvg = []
+    hyperTreeUni = []
+    accTreeAvg = []
+    sParams = len(hyperSvm)/15
+    tParams = len(hyperTree)/15
+    
+    for i in range(sParams):
+        sSum = 0
+        hyperSvmUni[i] = hyperSvm[i*15]
+        for j in range(15):
+            sSum += accSvm[(i*15)+j]
+        accSvmAvg[i] = sSum
+        
+    for i in range(tParams):
+        tSum = 0
+        hyperTreeUni[i] = hyperTree[i*15]
+        for j in range(15):
+            tSum += accTree[(i*15)+j]
+        accTreeAvg[i] = tSum
+        
     fig1, (axis1, axis2) = plt.subplots(1, 2)
     fig1.suptitle('Hyperparameter vs. Accuracy')
     axis1.plot(hyperSVM, accSVM, color="blue", linestyle="-.")
