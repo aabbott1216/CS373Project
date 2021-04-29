@@ -25,9 +25,9 @@ def run(sensitivity_svm, specificity_svm, sensitivity_tree, specificity_tree, ti
         spec_sorted_tree.append(key)
         sens_sorted_tree.append(sens_spec_dict_tree[key])
 
-    plt.scatter(1-np.array(spec_sorted_svm), sens_sorted_svm)
-    plt.scatter(1-np.array(spec_sorted_tree), sens_sorted_tree)
     plt.plot([0, 1])
+    plt.plot(1-np.array(spec_sorted_svm), sens_sorted_svm)
+    plt.plot(1-np.array(spec_sorted_tree), sens_sorted_tree)
     plt.legend(["Boundary", "SVM ROC", "Decision Tree ROC"])
 
     if (title == "kfold"):
