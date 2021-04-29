@@ -28,11 +28,11 @@ def pre_run():
     heartrandom.loc[heartrandom.thal == 1, 'thal'] = 6
 
     # Runs the algorithms with k-fold.
-    print("Validation tree and SVM over 15 folds: ",
+    print("SVM and Decision Tree performance over 15 folds: ",
           k_fold_validation(heartrandom, ["svm", "tree"]))
 
     # Runs the algorithms with bootstrapping.
-    print("Validation tree and SVM over 30 rounds: ",
+    print("SVM and Decision Tree performance over 30 rounds: ",
           boot_validation(heartrandom, ["svm", "tree"]))
 
 
